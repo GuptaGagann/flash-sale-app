@@ -14,10 +14,12 @@ const app = express();
 // logging
 app.use(morgan('dev'));
 
+console.log("Allowed origin: ", config.allowedOrigin);
+
 // Middlewares
 app.use(cors({
   // for development, restricting origin to frontend dev port
-  origin: [config.allowedOrigin]
+  origin: config.allowedOrigin ? [config.allowedOrigin] : true
 }));
 app.use(express.json());
 
