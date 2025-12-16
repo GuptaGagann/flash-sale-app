@@ -99,7 +99,7 @@ export async function cancelOrder(req, res) {
         const result = await inventory.cancelOrder({ productId: id, orderId });
         res.json({
             productId: id,
-            orderId: result.order.orderId,
+            orderId: orderId,
             updatedStock: result.updatedStock,
         });
     } catch (err) {

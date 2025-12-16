@@ -27,18 +27,9 @@ app.use('/product', productRouter);
 
 app.post('/load-test', async (req, res) => {
   try {
-    process.env.INTERNAL_LOAD_TEST = "true";
     const { concurrency, stock, orderQty, productId } = req.body;
-    // Run in background
-    setImmediate(async () => {
-      try {
-        await runLoadTest(concurrency, stock, orderQty, productId);
-        console.log("Internal load test completed");
-      } catch (e) {
-        console.error("Internal load test failed", e);
-      }
-    });
-    res.json({ status: "Started load test" });
+    const result = await runLoadTest(concurrency, stock, orderQty, productId);
+    res.json(result);
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: e.message });

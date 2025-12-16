@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import InventoryTile from "../../components/InventoryTile/InventoryTile";
-import { getAllProducts, runLoadTest, resetProducts } from "../../api/api";
+import { getAllProducts, runLoadTest, resetProducts, simulateFlashSale } from "../../api/api";
 import "./Dashboard.css";
 
 export default function Dashboard() {
@@ -92,7 +92,7 @@ export default function Dashboard() {
 
     // ... existing useEffects ...
 
-    const handleSimulate = async () => {
+    const handleFrontendSimulation = async () => {
         if (products.length === 0) {
             alert("No products to simulate. Please add products first.");
             return;
@@ -111,25 +111,66 @@ export default function Dashboard() {
         }
 
         try {
-            console.log("Simulating for:", targets.map(p => p.id));
+            console.log("Starting Frontend Simulation for:", targets.map(p => p.id));
 
-            // Randomize and run
+            // Create concurrent simulation tasks for each target product
             const promises = targets.map(p => {
-                // Randomize params slightly to simulate organic traffic
-                const concurrency = 20 + Math.floor(Math.random() * 50); // 20-70 concurrent
-                const delayStart = Math.floor(Math.random() * 2000); // 0-2s start delay
+                // Randomize buyers slightly
+                const buyers = 20 + Math.floor(Math.random() * 30); // 20-50 buyers per product
+                // Pass fetchData as callback to refresh UI during simulation
+                return simulateFlashSale(p.id, buyers, 1, fetchData);
+            });
 
+            const results = await Promise.all(promises);
+            console.log("Simulation Results:", results);
+
+            // Simple aggregation for console/alert
+            const totalSuccess = results.reduce((acc, curr) => acc + curr.success, 0);
+            const totalConflict = results.reduce((acc, curr) => acc + curr.conflict, 0);
+            const totalError = results.reduce((acc, curr) => acc + curr.error, 0);
+            const totalCancelled = results.reduce((acc, curr) => acc + curr.cancelled, 0);
+
+            console.log(`Simulation Complete. Success: ${totalSuccess}, Cancelled: ${totalCancelled}, Conflict: ${totalConflict}, Error: ${totalError}`);
+
+        } catch (e) {
+            console.error("Simulation failed", e);
+            alert("Failed to run simulation.");
+        } finally {
+            setIsSimulating(false);
+            setIsPolling(false);
+            // Don't clear timer immediately so user can see final time, or clear if desired.
+            if (saleTimerRef.current) {
+                clearInterval(saleTimerRef.current);
+                saleTimerRef.current = null;
+            }
+        }
+    };
+
+    const handleLegacyLoadTest = async () => {
+        if (products.length === 0) return;
+        setIsSimulating(true);
+        setIsPolling(true);
+
+        const targets = products.filter(p => p.is_flash_sale !== false);
+        if (targets.length === 0) {
+            setIsSimulating(false);
+            return;
+        }
+
+        try {
+            console.log("Starting Backend Load Test...");
+            const promises = targets.map(p => {
+                const concurrency = 50;
+                const delayStart = Math.floor(Math.random() * 1000);
                 return new Promise(resolve => {
                     setTimeout(() => {
                         runLoadTest(concurrency, p.stock, 1, p.id).then(resolve);
                     }, delayStart);
                 });
             });
-
             await Promise.all(promises);
         } catch (e) {
             console.error(e);
-            alert("Failed to start load test.");
         } finally {
             setIsSimulating(false);
             setIsPolling(false);
@@ -202,7 +243,23 @@ export default function Dashboard() {
                         {resetting ? "Resetting..." : "Reset Stock"}
                     </button>
                     <button
-                        onClick={handleSimulate}
+                        onClick={handleLegacyLoadTest}
+                        disabled={isSimulating}
+                        style={{
+                            padding: '10px 20px',
+                            background: isSimulating ? '#ccc' : '#7b1fa2', // Purple for backend test
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: isSimulating ? 'not-allowed' : 'pointer',
+                            fontWeight: 'bold',
+                            marginLeft: 10
+                        }}
+                    >
+                        Load Test
+                    </button>
+                    <button
+                        onClick={handleFrontendSimulation}
                         disabled={isSimulating}
                         style={{
                             padding: '10px 20px',
@@ -211,10 +268,11 @@ export default function Dashboard() {
                             border: 'none',
                             borderRadius: '4px',
                             cursor: isSimulating ? 'not-allowed' : 'pointer',
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            marginLeft: 10
                         }}
                     >
-                        {isSimulating ? "Simulating..." : "Simulate Multi-Sale"}
+                        Simulate Sale
                     </button>
                 </div>
             </div>
