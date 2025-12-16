@@ -46,10 +46,15 @@ export async function getAllProducts() {
     return res.json();
 }
 
-export async function seedProducts() {
-    const res = await fetch(`${BASE_URL}/product/seed`, {
+export async function seedProducts(productsData = null) {
+    const options = {
         method: "POST"
-    });
+    };
+    if (productsData) {
+        options.headers = { "Content-Type": "application/json" };
+        options.body = JSON.stringify(productsData);
+    }
+    const res = await fetch(`${BASE_URL}/product/seed`, options);
     return res.json();
 }
 

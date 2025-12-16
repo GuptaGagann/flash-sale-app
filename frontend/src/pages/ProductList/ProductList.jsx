@@ -37,6 +37,35 @@ export default function ProductList() {
         }
     };
 
+    const handleBulkUpload = (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            try {
+                const json = JSON.parse(e.target.result);
+                if (!Array.isArray(json)) {
+                    alert("Invalid format: Expected a JSON array of products.");
+                    return;
+                }
+                const res = await seedProducts(json);
+                if (res.error) {
+                    alert(res.error);
+                } else {
+                    alert(`Successfully added ${res.count} products!`);
+                    fetchProducts();
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Failed to parse JSON or upload products.");
+            }
+            // Reset input
+            event.target.value = '';
+        };
+        reader.readAsText(file);
+    };
+
     const handleOrder = (id) => {
         // Since we removed ManageOrders, navigate to details or just show alert?
         // User didn't specify replacement for order flow here, but we are removing ManageOrders.
@@ -57,7 +86,21 @@ export default function ProductList() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     <span style={{ color: "var(--text-secondary)" }}>{products.length} Items</span>
                     <button onClick={handleSeed} style={{ padding: '8px 16px', background: '#4caf50', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}>
-                        + Seed Data
+                        + Seed Default
+                    </button>
+
+                    <input
+                        type="file"
+                        id="bulk-upload-input"
+                        accept=".json"
+                        style={{ display: "none" }}
+                        onChange={handleBulkUpload}
+                    />
+                    <button
+                        onClick={() => document.getElementById('bulk-upload-input').click()}
+                        style={{ padding: '8px 16px', background: '#2196f3', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}
+                    >
+                        Bulk Import JSON
                     </button>
                     {products.length > 0 && (
                         <button

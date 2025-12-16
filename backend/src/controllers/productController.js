@@ -3,6 +3,7 @@ import * as inventory from '../services/inventoryService.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { bulkUploadSchema } from '../validators/productValidators.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -34,9 +35,21 @@ export async function listProducts(req, res) {
 // POST /product/seed
 export async function seedProducts(req, res) {
     try {
-        const dataPath = path.join(__dirname, '../data/products.json');
-        const rawData = fs.readFileSync(dataPath, 'utf-8');
-        const products = JSON.parse(rawData);
+        let products;
+
+        // Check if bulk upload (array in body)
+        if (Array.isArray(req.body) && req.body.length > 0) {
+            const { error, value } = bulkUploadSchema.validate(req.body);
+            if (error) {
+                return res.status(400).json({ error: `Validation error: ${error.details[0].message}` });
+            }
+            products = value;
+        } else {
+            // Default: Read from local file
+            const dataPath = path.join(__dirname, '../data/products.json');
+            const rawData = fs.readFileSync(dataPath, 'utf-8');
+            products = JSON.parse(rawData);
+        }
 
         const created = await Promise.all(products.map(p => inventory.addProduct(p)));
         res.status(201).json({ message: 'Seeded successfully', count: created.length, products: created });
