@@ -42,6 +42,12 @@ const conf = convict({
         format: Boolean,
         default: false,
         env: 'USE_DATABASE'
+    },
+    allowedOrigin: {
+        doc: 'CORS allowed origin',
+        format: String,
+        default: 'http://localhost:5173',
+        env: 'ALLOWED_ORIGIN'
     }
 });
 

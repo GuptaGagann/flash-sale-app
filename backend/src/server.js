@@ -17,7 +17,7 @@ app.use(morgan('dev'));
 // Middlewares
 app.use(cors({
   // for development, restricting origin to frontend dev port
-  origin: ['http://localhost:5173']
+  origin: [config.allowedOrigin]
 }));
 app.use(express.json());
 
