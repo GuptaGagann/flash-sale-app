@@ -1,0 +1,19 @@
+.form-page-layout {
+    width: 100%;
+    padding: 32px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-page-layout h2 {
+    width: 100%;
+    max-width: 600px;
+    text-align: left;
+    margin-bottom: 16px;
+}
+
+.form-page-layout .card {
+    width: 100%;
+    max-width: 600px;
+}

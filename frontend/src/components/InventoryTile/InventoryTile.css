@@ -1,0 +1,41 @@
+.inventory-tile {
+    min-width: 100px;
+    border: 2px solid #333;
+    /* Prominent border */
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    /* White bg to let pastels show clearly */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.inventory-tile-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    transition: height 0.5s ease;
+    z-index: 1;
+}
+
+.inventory-tile-content {
+    position: relative;
+    z-index: 2;
+    padding: 10px;
+    text-align: center;
+    font-weight: 600;
+    /* Prominent text */
+    color: #000;
+}
+
+.inventory-tile-stats {
+    font-size: 11px;
+    margin-top: 5px;
+    color: #222;
+    /* Darker grey */
+    font-weight: bold;
+}

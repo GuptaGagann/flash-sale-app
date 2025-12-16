@@ -1,0 +1,187 @@
+:root {
+  /* Color Palette */
+  --primary-color: #6200ea;
+  /* Deep Purple */
+  --primary-hover: #3700b3;
+  --accent-color: #00bfa5;
+  /* Teal */
+  --bg-color: #f8f9fa;
+  --card-bg: #ffffff;
+  --text-main: #212121;
+  --text-secondary: #757575;
+  --border-color: #e0e0e0;
+  --error-color: #b00020;
+  --success-color: #00c853;
+
+  /* Spacing */
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.6;
+  width: 100%;
+}
+
+#root {
+  width: 100%;
+}
+
+/* Layout Containers */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.main-content {
+  padding: var(--spacing-lg) 0;
+  min-height: calc(100vh - 64px);
+  /* Fallback for sticky footer */
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4 {
+  margin: 0 0 var(--spacing-md);
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+h2 {
+  font-size: 1.75rem;
+}
+
+p {
+  margin-bottom: var(--spacing-md);
+}
+
+/* Buttons */
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: var(--primary-color);
+  color: white;
+  gap: 8px;
+}
+
+button:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:disabled {
+  background-color: var(--text-secondary);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+button.secondary {
+  background-color: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+button.secondary:hover {
+  background-color: rgba(98, 0, 234, 0.05);
+}
+
+button.danger {
+  background-color: var(--error-color);
+}
+
+button.danger:hover {
+  background-color: #d32f2f;
+}
+
+/* Forms */
+input {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+  /* Fix width issues */
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(98, 0, 234, 0.1);
+}
+
+label {
+  display: block;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* Cards */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: clamp(16px, 4vw, 32px);
+  /* Fluid padding: min 16px, preferred 4vw, max 32px */
+  border: 1px solid var(--border-color);
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge-success {
+  background: rgba(0, 200, 83, 0.1);
+  color: var(--success-color);
+}
+
+.badge-error {
+  background: rgba(176, 0, 32, 0.1);
+  color: var(--error-color);
+}
