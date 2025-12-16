@@ -8,37 +8,37 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // POST /product
-export function createProduct(req, res) {
+export async function createProduct(req, res) {
     const { name, stock } = req.body;
     if (!name || typeof stock !== 'number' || stock < 0) {
         return res.status(400).json({ error: 'Invalid name or stock (stock must be a non-negative integer)' });
     }
-    const product = inventory.addProduct({ name, stock });
+    const product = await inventory.addProduct({ name, stock });
     res.status(201).json(product);
 }
 
 // GET /product/:id
-export function getProduct(req, res) {
+export async function getProduct(req, res) {
     const { id } = req.params;
-    const product = inventory.getProduct(id);
+    const product = await inventory.getProduct(id);
     if (!product) return res.status(404).json({ error: 'Product not found' });
     res.json(product);
 }
 
 // GET /product
-export function listProducts(req, res) {
-    const products = inventory.listProducts();
+export async function listProducts(req, res) {
+    const products = await inventory.listProducts();
     res.json(products);
 }
 
 // POST /product/seed
-export function seedProducts(req, res) {
+export async function seedProducts(req, res) {
     try {
         const dataPath = path.join(__dirname, '../data/products.json');
         const rawData = fs.readFileSync(dataPath, 'utf-8');
         const products = JSON.parse(rawData);
 
-        const created = products.map(p => inventory.addProduct(p));
+        const created = await Promise.all(products.map(p => inventory.addProduct(p)));
         res.status(201).json({ message: 'Seeded successfully', count: created.length, products: created });
     } catch (err) {
         console.error('Seed error:', err);
@@ -47,17 +47,17 @@ export function seedProducts(req, res) {
 }
 
 // POST /product/reset
-export function resetProducts(req, res) {
+export async function resetProducts(req, res) {
     try {
         // Clear all data
-        inventory.clearAll();
+        await inventory.clearAll();
 
         // Re-seed
         const dataPath = path.join(__dirname, '../data/products.json');
         const rawData = fs.readFileSync(dataPath, 'utf-8');
         const products = JSON.parse(rawData);
 
-        const created = products.map(p => inventory.addProduct(p));
+        const created = await Promise.all(products.map(p => inventory.addProduct(p)));
         res.status(200).json({ message: 'Reset successfully', count: created.length, products: created });
     } catch (err) {
         console.error('Reset error:', err);
@@ -66,10 +66,10 @@ export function resetProducts(req, res) {
 }
 
 // GET /product/:id/orders
-export function getProductOrders(req, res) {
+export async function getProductOrders(req, res) {
     const { id } = req.params;
-    if (!inventory.getProduct(id)) return res.status(404).json({ error: 'Product not found' });
-    const orders = inventory.listOrdersForProduct(id);
+    if (!await inventory.getProduct(id)) return res.status(404).json({ error: 'Product not found' });
+    const orders = await inventory.listOrdersForProduct(id);
     res.json(orders);
 }
 

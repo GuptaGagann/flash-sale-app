@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: flashsale-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: flashuser
+      POSTGRES_PASSWORD: flashpass
+      POSTGRES_DB: flashsale
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

@@ -5,6 +5,7 @@ import { config } from './config.js';
 import productRouter from './routes/productRoutes.js';
 import { runLoadTest } from './scripts/loadTest.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
+import { initProductSchema } from './model/productSchema.js';
 
 const { port: PORT } = config;
 
@@ -44,6 +45,20 @@ app.use(notFoundHandler);
 // error handler (must be last)
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`Backend server running on http://localhost:${PORT}`);
-});
+// Server startup
+(async () => {
+  if (config.useDatabase) {
+    try {
+      await initProductSchema();
+      console.log('Database schema initialized.');
+    } catch (err) {
+      console.error('Failed to initialize database schema:', err);
+      process.exit(1);
+    }
+  }
+
+  app.listen(PORT, () => {
+    console.log(`Backend server running on http://localhost:${PORT}`);
+  });
+})();
+
