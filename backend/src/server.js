@@ -27,9 +27,18 @@ app.use('/product', productRouter);
 
 app.post('/load-test', async (req, res) => {
   try {
+    process.env.INTERNAL_LOAD_TEST = "true";
     const { concurrency, stock, orderQty, productId } = req.body;
-    const result = await runLoadTest(concurrency, stock, orderQty, productId);
-    res.json(result);
+    // Run in background
+    setImmediate(async () => {
+      try {
+        await runLoadTest(concurrency, stock, orderQty, productId);
+        console.log("Internal load test completed");
+      } catch (e) {
+        console.error("Internal load test failed", e);
+      }
+    });
+    res.json({ status: "Started load test" });
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: e.message });
@@ -54,7 +63,7 @@ app.use(errorHandler);
     }
   }
 
-  app.listen(PORT, () => {
+  app.listen(PORT, "0.0.0.0", () => {
     console.log(`Backend server running on http://localhost:${PORT}`);
   });
 })();

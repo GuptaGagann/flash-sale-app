@@ -1,5 +1,5 @@
-export const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
-const BASE_URL = API_BASE_URL;
+export const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
+const BASE_URL = import.meta.env.INTERNAL_LOAD_TEST === "true" ? `http://127.0.0.1:${import.meta.env.VITE_BACKEND_URL || 10000}` : API_BASE_URL;
 
 export async function createProduct(name, stock) {
     const res = await fetch(`${BASE_URL}/product`, {
