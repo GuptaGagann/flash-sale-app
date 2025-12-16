@@ -1,0 +1,16 @@
+{
+    "name": "flash-sale-app-root",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "frontend:dev": "npm --prefix frontend run dev",
+        "backend:dev": "npm --prefix backend run dev",
+        "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run dev --prefix backend\"",
+        "setup": "npm install && npm run install-all",
+        "install-all": "npm --prefix frontend install && npm --prefix backend install",
+        "preview": "npm run build --prefix frontend && concurrently \"npm run preview --prefix frontend\" \"npm run start --prefix backend\""
+    },
+    "devDependencies": {
+        "concurrently": "^9.1.0"
+    }
+}
