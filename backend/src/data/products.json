@@ -1,0 +1,122 @@
+[
+    {
+        "id": "prod_001",
+        "name": "TechPro X1 Ultra",
+        "brand": "TechPro",
+        "description": "The ultimate flagship with a stunning 6.8-inch AMOLED display, Snapdragon 8 Gen 3 processor, and a quad-camera setup for professional photography.",
+        "price": 899.99,
+        "original_price": 1199.99,
+        "discount_percentage": 25,
+        "currency": "USD",
+        "stock": 50,
+        "image_url": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80",
+        "specs": {
+            "screen": "6.8 inch AMOLED 120Hz",
+            "processor": "Snapdragon 8 Gen 3",
+            "ram": "12GB",
+            "storage": "256GB",
+            "battery": "5000mAh"
+        },
+        "is_flash_sale": true
+    },
+    {
+        "id": "prod_002",
+        "name": "Lumix Fold Z",
+        "brand": "Lumix",
+        "description": "Unfold the future with the Lumix Fold Z. A compact phone that opens into a tablet-sized experience. perfect for multitasking.",
+        "price": 1299.99,
+        "original_price": 1799.99,
+        "discount_percentage": 28,
+        "currency": "USD",
+        "stock": 30,
+        "image_url": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=600&q=80",
+        "specs": {
+            "screen": "7.6 inch Foldable OLED",
+            "processor": "Lumix Silicon M2",
+            "ram": "16GB",
+            "storage": "512GB",
+            "battery": "4400mAh"
+        },
+        "is_flash_sale": true
+    },
+    {
+        "id": "prod_003",
+        "name": "Bolt Speed 5G",
+        "brand": "Bolt",
+        "description": "Blazing fast 5G speeds at an affordable price. Features a 90Hz smooth display and all-day battery life.",
+        "price": 299.99,
+        "original_price": 399.99,
+        "discount_percentage": 25,
+        "currency": "USD",
+        "stock": 200,
+        "image_url": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80",
+        "specs": {
+            "screen": "6.5 inch IPS LCD 90Hz",
+            "processor": "Dimensity 900",
+            "ram": "8GB",
+            "storage": "128GB",
+            "battery": "5000mAh"
+        },
+        "is_flash_sale": true
+    },
+    {
+        "id": "prod_004",
+        "name": "Pixelate 8 Pro",
+        "brand": "Vision",
+        "description": "Experience the pure Android experience with the best AI-powered camera in the market.",
+        "price": 749.99,
+        "original_price": 999.00,
+        "discount_percentage": 25,
+        "currency": "USD",
+        "stock": 75,
+        "image_url": "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?auto=format&fit=crop&w=600&q=80",
+        "specs": {
+            "screen": "6.7 inch LTPO OLED",
+            "processor": "Tensor G3",
+            "ram": "12GB",
+            "storage": "128GB",
+            "battery": "5050mAh"
+        },
+        "is_flash_sale": true
+    },
+    {
+        "id": "prod_005",
+        "name": "Fruit Phone 15",
+        "brand": "Fruit",
+        "description": "Reliable, powerful, and simpler than ever. The new standard for smartphones.",
+        "price": 799.00,
+        "original_price": 799.00,
+        "discount_percentage": 0,
+        "currency": "USD",
+        "stock": 100,
+        "image_url": "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=600&q=80",
+        "specs": {
+            "screen": "6.1 inch Super Retina XDR",
+            "processor": "A16 Bionic",
+            "ram": "6GB",
+            "storage": "128GB",
+            "battery": "3349mAh"
+        },
+        "is_flash_sale": false
+    },
+    {
+        "id": "prod_006",
+        "name": "Zenith Gaming Phone",
+        "brand": "Zenith",
+        "description": "Designed for gamers. Dedicated triggers, superior cooling system, and RGB lighting.",
+        "price": 599.99,
+        "original_price": 899.99,
+        "discount_percentage": 33,
+        "currency": "USD",
+        "stock": 15,
+        "image_url": "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?auto=format&fit=crop&w=600&q=80",
+        "specs": {
+            "screen": "6.8 inch 165Hz AMOLED",
+            "processor": "Snapdragon 8 Gen 2",
+            "ram": "16GB",
+            "storage": "512GB",
+            "battery": "6000mAh"
+        },
+        "is_flash_sale": true
+    }
+]
