@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { getProductById, getProductOrders } from "../../api/api";
+import { getProductById, getProductOrders, updateProduct } from "../../api/api";
 import "./ProductDetails.css";
 
 export default function ProductDetails() {
@@ -37,6 +37,24 @@ export default function ProductDetails() {
             setLoading(false);
         }
     }
+
+    const handleUpdateStock = async () => {
+        const newStock = prompt("Enter new stock value:", product.stock);
+        if (newStock !== null) {
+            const stockVal = parseInt(newStock, 10);
+            if (isNaN(stockVal) || stockVal < 0) {
+                alert("Invalid stock value");
+                return;
+            }
+            try {
+                await updateProduct(product.id, stockVal);
+                fetchDetails(); // refresh
+            } catch (e) {
+                console.error(e);
+                alert("Failed to update stock");
+            }
+        }
+    };
 
     return (
         <div className="product-details-container">
@@ -126,6 +144,9 @@ export default function ProductDetails() {
                                     <div style={{ fontWeight: "bold", fontSize: "1.5rem", color: product.stock > 0 ? "var(--success-color)" : "var(--error-color)" }}>
                                         {product.stock}
                                     </div>
+                                    <button onClick={handleUpdateStock} style={{ marginTop: "5px", fontSize: "0.8rem", padding: "4px 8px" }}>
+                                        Edit Stock
+                                    </button>
                                 </div>
                                 <div>
                                     <label style={{ fontSize: "0.8rem" }}>Product ID</label>

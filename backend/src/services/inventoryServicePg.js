@@ -39,6 +39,22 @@ export async function addProduct(productData) {
     return getProduct(finalId);
 }
 
+export async function updateProduct(id, { stock }) {
+    // First get current values
+    const current = await getProduct(id);
+    if (!current) return null;
+
+    const stockToAdd = stock - current.stock; // Calculate the difference
+    const newInitialStock = current.initial_stock + stockToAdd;
+
+    const { rowCount } = await pool.query(
+        `UPDATE products SET stock = $1, initial_stock = $2, updated_at = now() WHERE id = $3`,
+        [stock, newInitialStock, id]
+    );
+    if (rowCount === 0) return null;
+    return getProduct(id);
+}
+
 export async function getProduct(id) {
     const { rows } = await pool.query(
         `SELECT 

@@ -9,6 +9,15 @@ export async function createProduct(name, stock) {
     return res.json();
 }
 
+export async function updateProduct(id, stock) {
+    const res = await fetch(`${BASE_URL}/product/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ stock })
+    });
+    return res.json();
+}
+
 export async function getProductById(id) {
     const res = await fetch(`${BASE_URL}/product/${id}`);
     return res.json();

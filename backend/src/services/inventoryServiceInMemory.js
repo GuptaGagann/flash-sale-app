@@ -46,6 +46,17 @@ export function addProduct({ id = null, name, stock, ...rest }) {
     return product;
 }
 
+export async function updateProduct(id, { stock }) { // async for consistency
+    if (!products.has(id)) return null;
+    const product = products.get(id);
+    const stockToAdd = stock - product.stock; // Calculate the difference
+    product.stock = stock;
+    product.initial_stock = product.initial_stock + stockToAdd; // Add to initial stock
+    product.updatedAt = now();
+    products.set(id, product);
+    return product;
+}
+
 export function getProduct(productId) {
     return products.get(productId) || null;
 }

@@ -147,7 +147,10 @@ export default function Dashboard() {
     };
 
     const handleLegacyLoadTest = async () => {
-        if (products.length === 0) return;
+        if (products.length === 0) {
+            alert("No products to load test. Please add products first.");
+            return;
+        }
         setIsSimulating(true);
         setIsPolling(true);
 
@@ -210,9 +213,9 @@ export default function Dashboard() {
                         <span style={{ color: 'red', fontWeight: 'bold' }}>SOLD OUT</span>
                     )}
                     <button
-                        disabled={resetting}
+                        disabled={resetting || products.length === 0}
                         onClick={async () => {
-                            if (confirm("Reset all stock?")) {
+                            if (confirm("Are you sure? This will CLEAR ALL products and orders.")) {
                                 setResetting(true);
                                 setIsPolling(false); // Stop any active polling
                                 setIsSimulating(false); // Stop any simulation flags
@@ -231,16 +234,16 @@ export default function Dashboard() {
                         }}
                         style={{
                             padding: '10px 20px',
-                            background: resetting ? '#ccc' : '#d32f2f',
+                            background: (resetting || products.length === 0) ? '#ccc' : '#d32f2f',
                             color: 'white',
                             border: 'none',
                             borderRadius: '4px',
-                            cursor: resetting ? 'not-allowed' : 'pointer',
+                            cursor: (resetting || products.length === 0) ? 'not-allowed' : 'pointer',
                             fontWeight: 'bold',
                             marginLeft: 10
                         }}
                     >
-                        {resetting ? "Resetting..." : "Reset Stock"}
+                        {resetting ? "Clearing..." : "Clear Stock"}
                     </button>
                     <button
                         onClick={handleLegacyLoadTest}

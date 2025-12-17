@@ -106,7 +106,7 @@ export default function ProductList() {
                         <button
                             disabled={resetting}
                             onClick={async () => {
-                                if (confirm("Reset all stock?")) {
+                                if (confirm("Are you sure? This will CLEAR ALL products and orders.")) {
                                     setResetting(true);
                                     try {
                                         await resetProducts();
@@ -120,7 +120,7 @@ export default function ProductList() {
                             }}
                             style={{ padding: '8px 16px', background: resetting ? '#ccc' : '#d32f2f', color: 'white', border: 'none', borderRadius: 4, cursor: resetting ? 'not-allowed' : 'pointer', marginLeft: 10 }}
                         >
-                            {resetting ? "Resetting..." : "Reset Stock"}
+                            {resetting ? "Clearing..." : "Clear Stock"}
                         </button>
                     )}
                 </div>

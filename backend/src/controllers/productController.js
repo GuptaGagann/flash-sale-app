@@ -18,6 +18,18 @@ export async function createProduct(req, res) {
     res.status(201).json(product);
 }
 
+// PUT /product/:id
+export async function updateProduct(req, res) {
+    const { id } = req.params;
+    const { stock } = req.body;
+    if (typeof stock !== 'number' || stock < 0) {
+        return res.status(400).json({ error: 'Invalid stock value' });
+    }
+    const product = await inventory.updateProduct(id, { stock });
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+    res.json(product);
+}
+
 // GET /product/:id
 export async function getProduct(req, res) {
     const { id } = req.params;
@@ -62,19 +74,12 @@ export async function seedProducts(req, res) {
 // POST /product/reset
 export async function resetProducts(req, res) {
     try {
-        // Clear all data
+        // Clear all data ONLY (No re-seeding)
         await inventory.clearAll();
-
-        // Re-seed
-        const dataPath = path.join(__dirname, '../data/products.json');
-        const rawData = fs.readFileSync(dataPath, 'utf-8');
-        const products = JSON.parse(rawData);
-
-        const created = await Promise.all(products.map(p => inventory.addProduct(p)));
-        res.status(200).json({ message: 'Reset successfully', count: created.length, products: created });
+        res.status(200).json({ message: 'Inventory cleared successfully' });
     } catch (err) {
         console.error('Reset error:', err);
-        res.status(500).json({ error: 'Failed to reset products' });
+        res.status(500).json({ error: 'Failed to clear products' });
     }
 }
 

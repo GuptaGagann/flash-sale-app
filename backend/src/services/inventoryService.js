@@ -13,3 +13,4 @@ export const listOrdersForProduct = impl.listOrdersForProduct;
 export const placeOrder = impl.placeOrder;
 export const cancelOrder = impl.cancelOrder;
 export const clearAll = impl.clearAll;
+export const updateProduct = impl.updateProduct;

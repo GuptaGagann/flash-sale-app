@@ -10,6 +10,7 @@ router.get('/', productController.listProducts);
 router.post('/seed', productController.seedProducts);
 router.post('/reset', productController.resetProducts);
 router.post('/', validate(createProductSchema), productController.createProduct);
+router.put('/:id', productController.updateProduct);
 router.get('/:id', productController.getProduct);
 router.get('/:id/orders', productController.getProductOrders);
 router.post('/:id/order', validate(placeOrderSchema), productController.placeOrder);
